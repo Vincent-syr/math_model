@@ -34,8 +34,8 @@ function [S, E, I, Ed, Id, R, beta2_list, incub_list, E_con, mask, p1] = seir_v_
         end    
     end
     
-%     n_mask = sum(mask > 0);
-%     n_econ = sum(E_con > 0);
+    n_mask = sum(mask > 0);
+    n_econ = sum(E_con > 0);
     beta2_list(mask~=0) = (k1*log(k2*E_con(mask~=0) + 1));
     
     if E0 > 0

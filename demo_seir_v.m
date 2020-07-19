@@ -1,6 +1,6 @@
 clear;
 % constant
-N = 10000;
+N = 1000000;
 T = 1:300;
 
 % param
@@ -14,11 +14,12 @@ theta1 = 0.5;  % rate of i to id
 theta2 = 0.1;  % rate of e to ed
 
 % initial
-E = 0;
-I = 1;
-S = N - I;
-R = 0;
-Ed = 0; Id = 0;
+E = zeros(length(T), 1);
+I = zeros(length(T), 1); I(1)=10;
+S =  zeros(length(T), 1); S(1)=N - I(1);
+R = zeros(length(T), 1);
+Ed = zeros(length(T), 1); Id = zeros(length(T), 1);
+
 incub_list = random('Poisson',lambda, N, 1);
 beta2_list = zeros(N,1);
 mask = zeros(N,1);
