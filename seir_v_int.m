@@ -19,11 +19,11 @@ function [S, E, I, Ed, Id, R, beta2_list, incub_list, E_con, mask, p1] = seir_v_
 
     for j = 1:p1
         if E_con(j)==-100   % have transmit to I
-            if mask(j~=0)
-                disp(' mask(j~=0)');
-                error('error')
-%                 mask(j) = 0;
-            end
+%             if mask(j~=0)
+%                 disp(' mask(j~=0)');
+%                 error('error')
+%             end
+            mask(j) = 0;
             continue;
         end
         E_con(j) = E_con(j)+1;  % # incubate day +1
@@ -56,10 +56,13 @@ function [S, E, I, Ed, Id, R, beta2_list, incub_list, E_con, mask, p1] = seir_v_
     if E0 > 0
         num = prob_int(E0 * theta2);
         [idx, temp] = find(mask==1);
-        rand_idx = randperm(length(idx));
-        idx_cho = idx(rand_idx(1:num));
-        
-        mask(idx_cho)=2;
+        if isempty(idx)
+            num=0;
+        else
+            rand_idx = randperm(length(idx));
+            idx_cho = idx(rand_idx(1:num));
+            mask(idx_cho)=2;
+        end
     else
         num = 0; 
     end    
