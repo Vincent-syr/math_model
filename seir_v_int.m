@@ -1,5 +1,8 @@
 function [S, E, I, Ed, Id, R, beta2_list, incub_list, E_con, mask, p1] = seir_v_int(beta1, r, rd, gamma, k1, k2, theta1, theta2,  N, S0, E0, I0, Ed0, Id0, R0, beta2_list, incub_list, E_con, mask, p1)
 
+% assert sum(mask(==0)) == sum([E_con==0, E_con==-100])
+
+
     dep_e = prob_int(sum(r * beta2_list(mask==1)) * S0/N);
     dep_i = prob_int(r*I0*beta1*S0/N);
     dep_ed = prob_int(sum(rd * beta2_list(mask==2)) * S0/N);
@@ -11,12 +14,16 @@ function [S, E, I, Ed, Id, R, beta2_list, incub_list, E_con, mask, p1] = seir_v_
  
     % update p1 and mask
     p1_t = min(p1 + dep, N);
-    mask(p1:p1_t) = 1;
+    mask(p1+1:p1_t) = 1;
     p1 = p1_t;
 
     for j = 1:p1
         if E_con(j)==-100   % have transmit to I
-            mask(j) = 0;
+            if mask(j~=0)
+                disp(' mask(j~=0)');
+                error('error')
+%                 mask(j) = 0;
+            end
             continue;
         end
         E_con(j) = E_con(j)+1;  % # incubate day +1
@@ -34,9 +41,17 @@ function [S, E, I, Ed, Id, R, beta2_list, incub_list, E_con, mask, p1] = seir_v_
         end    
     end
     
-%     n_mask = sum(mask > 0);
-%     n_econ = sum(E_con > 0);
+    n_mask = sum(mask > 0);
+    n_econ = sum(E_con > 0);
+    if n_mask ~= n_econ
+        disp('n_mask ~= n_econ');
+        error('n_mask ~= n_econ')
+    end
+    
     beta2_list(mask~=0) = (k1*log(k2*E_con(mask~=0) + 1));
+    
+    
+    
     
     if E0 > 0
         num = prob_int(E0 * theta2);

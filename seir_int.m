@@ -15,12 +15,8 @@ function [S, E, I, R, incub_list, E_con, inten_list, p1] = seir_int(beta1, r, ga
 
     den = 0;  % delta e negative
     for j = 1:p1
-        try
-            if E_con(j)==-100   % have transmit to I
-                continue;
-            end
-        catch 
-            disp(j)
+        if E_con(j)==-100   % have transmit to I
+            continue;
         end
         
         E_con(j) = E_con(j)+1;  % # incubate day +1
