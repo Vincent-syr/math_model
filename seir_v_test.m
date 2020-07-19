@@ -102,9 +102,7 @@ for i = 1:length(T)-1
     if val2 - 10000 > 2
         fprintf("val2 = %f \n", val2);
     end
-    
-
-    
+        
     S(i+1) = S(i) + ds;
     E(i+1) = E(i) + de;
     I(i+1) = I(i) + di;
