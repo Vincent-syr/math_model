@@ -1,6 +1,6 @@
 clear;
 % constant
-N = 10000;
+N = 100000;
 T = 1:100;
 
 % param
